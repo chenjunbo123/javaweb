@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 美化table表格：宽度100%，增加边框线，表格数据居中*/
+        table {
+            width: 100%;
+            border: 1px solid #ccc;
+            border-collapse: collapse;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="container">
+        <form class="search-form">
+            <label for="name">姓名：</label>
+            <input type="text" id="name" name="name" v-model="searchForm.name">
+
+            <label for="gender">性别：</label>
+            <select name="gender" id="gender" v-model="searchForm.gender">
+                <option value="">请选择</option>
+                <option value="1">男</option>
+                <option value="2">女</option>
+            </select>
+
+            <label for="job">职位</label>
+            <select name="job" id="job" v-model="searchForm.job">
+                <option value="">请选择</option>
+                <option value="1">班主任</option>
+                <option value="2">讲师</option>
+                <option value="2">教导主任</option>
+            </select>
+
+            <button type="button" v-on:click="handleSearch">查询</button>
+            <button type="button" @click="handleClear">清空</button>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>姓名</th>
+                    <th>照片</th>
+                    <th>性别</th>
+                    <th>职位</th>
+                    <th>入职时间</th>
+                    <th>薪资</th>
+                    <th>最后操作时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item, index) in empList" :key="item.id">
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.name }}</td>
+                    <td><img :src="item.image" :alt="item.name"></td>
+                    <td>{{ item.gender ===1 ? '男' : '女' }}</td>
+                    <td>
+                        <span v-if="item.job === '1'">班主任</span>
+                        <span v-else-if="item.job === '2'">讲师</span>
+                        <span v-else-if="item.job === '3'">教导主任</span>
+                        <span v-else>未定义</span>
+                        <!-- {{ item.job }} -->
+                        <!-- 
+                        <span v-show="item.job === '1'">班主任</span>
+                        <span v-show="item.job === '2'">讲师</span>
+                        <span v-show="item.job === '3'">教导主任</span> 
+                        -->
+                    </td>
+                    <td>{{ item.entrydate }}</td>
+                    <td>{{ '$ '+item.salary }}</td>
+                    <td>{{ item.updateTime }}</td>
+                    <td>
+                        <button type="button">编辑</button>
+                        <button type="button">删除</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script type="module">
+    import { createApp, ref } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+
+    createApp({
+        data() {
+            return {
+                searchForm: {
+                    name: '',
+                    gender: '',
+                    job: ''
+                },
+                empList: [
+                    {
+                        "id": 1,
+                        "name": '张三',
+                        "image": 'https://web-framework.oss-cn-hangzhou.aliyuncs.com/2023/4.jpg',
+                        "gender": 1,
+                        "job": '1',
+                        "entrydate": '2020-01-01',
+                        "salary": 1000,
+                        "updateTime": "2020-01-11 12:23:41"
+                    },
+                    {
+                        "id": 2,
+                        "name": '李四',
+                        "image": 'https://web-framework.oss-cn-hangzhou.aliyuncs.com/2023/2.jpg',
+                        "gender": 1,
+                        "job": '3',
+                        "entrydate": '2022-06-01',
+                        "salary": 2500,
+                        "updateTime": "2023-04-01 09:10:24"
+                    },
+                    {
+                        "id": 3,
+                        "name": '王五',
+                        "image": 'https://web-framework.oss-cn-hangzhou.aliyuncs.com/2023/4.jpg',
+                        "gender": 1,
+                        "job": '2',
+                        "entrydate": '2024-04-01',
+                        "salary": 2800,
+                        "updateTime": "2024-05-01 12:00:08"
+                    },
+                    {
+                        "id": 4,
+                        "name": '赵六',
+                        "image": 'https://web-framework.oss-cn-hangzhou.aliyuncs.com/2023/5.jpg',
+                        "gender": 2,
+                        "job": '2',
+                        "entrydate": '2024-06-01',
+                        "salary": 3000,
+                        "updateTime": "2024-07-01 13:20:55"
+                    }
+                ]
+            }
+        },
+        methods: {
+            handleSearch() {
+                console.log('search', this.searchForm);
+            },
+            handleClear() {
+                this.searchForm = {
+                    "name": '',
+                    "gender": '',
+                    "job": '',
+                    "entrydate": '',
+                    "salary": ''
+                }
+                console.log('clear');
+            },
+        },
+    }).mount('#container')
+    </script>
+</body>
+</html>
